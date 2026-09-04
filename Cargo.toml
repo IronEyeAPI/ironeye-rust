@@ -7,9 +7,9 @@
 name = "ironeye"
 version = "1.0.0"
 edition = "2021"
-# The floor the dependency tree actually permits: rustls pulls chacha20, which
-# requires edition 2024, stabilised in 1.85.
-rust-version = "1.85"
+# Dependency-driven rather than chosen: reqwest reaches url -> idna -> icu_*,
+# which requires 1.88. Nothing in this crate needs anything newer than 2021.
+rust-version = "1.88"
 description = "Official Rust client for the IronEye document intelligence and collection API."
 license = "MIT"
 authors = ["Direct Softworks"]
