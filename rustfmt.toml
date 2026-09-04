@@ -1,0 +1,6 @@
+# Committed so the crate formats the same wherever it sits. Without it, a build
+# inside the engine monorepo inherits that repository's settings by searching
+# upward, and the standalone mirror gets the defaults -- two answers for one file.
+max_width = 100
+use_small_heuristics = "Max"
+newline_style = "Unix"
