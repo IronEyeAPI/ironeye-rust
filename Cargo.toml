@@ -1,0 +1,29 @@
+# Its own workspace on purpose: the SDK is published to customers and must build
+# from a fresh clone of this directory alone, without the server workspace's
+# proprietary crates or its `publish = false`.
+[workspace]
+
+[package]
+name = "ironeye"
+version = "1.0.0"
+edition = "2021"
+rust-version = "1.83"
+description = "Official Rust client for the IronEye document intelligence and collection API."
+license = "MIT"
+authors = ["Direct Softworks"]
+documentation = "https://ironeye.org/docs/sdk/rust"
+homepage = "https://ironeye.org"
+repository = "https://github.com/IronEyeAPI/ironeye-rust"
+keywords = ["ironeye", "document", "pii", "secrets", "gdpr"]
+categories = ["api-bindings"]
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["time"] }
+tracing = "0.1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
