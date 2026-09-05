@@ -171,12 +171,25 @@ pub struct InputSummary {
     pub filename: Option<String>,
 }
 
+/// Where in the append-only chain this request was recorded.
+///
+/// Not a single value: `chain_id` names the chain, `head` is the digest after
+/// this entry and `seq` is how many precede it. It was declared a `String`,
+/// and serde decodes strictly, so every successful response failed to parse
+/// before the caller ever saw it.
+#[derive(Debug, Clone, Deserialize)]
+pub struct AuditPosition {
+    pub chain_id: String,
+    pub head: String,
+    pub seq: u64,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct Provenance {
     pub modules: BTreeMap<String, Value>,
     pub degraded: Vec<String>,
     pub elapsed_ms: f64,
-    pub audit: String,
+    pub audit: AuditPosition,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -308,9 +321,21 @@ pub struct CollectionMeta {
     pub source_kind: String,
     pub duration_ms: f64,
     pub records: usize,
-    pub attempts: u32,
+    /// Every source tried and how each one went, in order -- the reason a
+    /// record came from the source it did. It was declared a count.
+    pub attempts: Vec<Attempt>,
     #[serde(default)]
     pub cached: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Attempt {
+    pub source: String,
+    pub outcome: String,
+    #[serde(default)]
+    pub reason: Option<String>,
+    #[serde(default)]
+    pub detail: Option<String>,
 }
 
 /// The answer to a collection operation. `data` is one record, or an array of
